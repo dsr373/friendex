@@ -11,7 +11,7 @@ import (
 // quits the program and logs the error message together with the context-provided "message"
 func CheckErr(err error, message string) {
 	if err != nil {
-		log.Fatalf("%s : %s", message, err)
+		log.Panicf("%s : %s", message, err)
 	}
 }
 
