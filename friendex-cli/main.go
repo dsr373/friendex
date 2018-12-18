@@ -1,12 +1,15 @@
 package main
 
 import (
+	"context"
 	"encoding/json"
 	"fmt"
 	"os"
+
+	"github.com/dsr373/friendex/backend"
+	"github.com/dsr373/friendex/myutil"
+	"github.com/dsr373/friendex/testing"
 )
-import "github.com/dsr373/friendex/backend"
-import "github.com/dsr373/friendex/myutil"
 
 // checkCredentials asks for new database log in information if it is not already present
 // it is in main rather than on the backend because it is part of the interface
@@ -38,6 +41,9 @@ func checkCredentials() {
 
 func main() {
 	checkCredentials()
-	session := backend.OpenConnection()
-	defer session.Close()
+	client := backend.OpenClient()
+	defer client.Disconnect(context.Background())
+
+	err := testing.PutFakeUsers(client)
+	myutil.CheckErr(err, "Failed to insert user")
 }
